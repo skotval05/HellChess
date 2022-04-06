@@ -61,9 +61,15 @@ public class Tile {
         return this.coverView;
     }
     */
-    public boolean wasClicked(int mouseX, int mouseY) {
-        return ( (mouseX >=this.x && mouseX <= this.x + Constants.TILE_SIZE)
-                && (mouseY >= this.y && mouseY <= this.y + Constants.TILE_SIZE) );
+
+    public int[] getBounds() {
+        return new int[] {
+                (this.x * Constants.TILE_SIZE),
+                (this.x + 1 * Constants.TILE_SIZE),
+
+                (this.y * Constants.TILE_SIZE),
+                (this.y + 1 * Constants.TILE_SIZE)
+        };
     }
 
 }

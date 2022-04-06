@@ -70,4 +70,16 @@ public class Board {
             System.out.println("No Piece Here");
         return this.tiles[x][y].occupiedBy;
     }
+
+    public Tile getTileClicked(int mouseX, int mouseY) {
+        Tile clickedTile = null;
+
+        for (int y = 0; y < this.tiles.length; y ++) {
+            for (int x = 0; x < this.tiles.length; x ++) {
+
+            }
+        }
+
+        return clickedTile;
+    }
 }

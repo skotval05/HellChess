@@ -4,14 +4,14 @@ import com.github.jingerjesus.thehellchess.control.Constants;
 import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 import javafx.scene.image.Image;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class Piece {
     public Constants.PieceType type;
+    public boolean isFirstTurn = true;
     private Player owner;
     public Image cover;
     public int x, y;
+    public int firstX;
     private String coverIdentifier = "";
     private boolean hasPawnMoves = false, hasRookMoves = false, hasKnightMoves = false,
             hasBishopMoves = false, hasKingMoves = false;
@@ -20,6 +20,7 @@ public class Piece {
     public Piece(Constants.PieceType type, int x, int y, Player owner) {
         this.type = type;
         this.x = x; this.y = y;
+        this.firstX = x;
 
         this.owner = owner;
 
@@ -31,39 +32,33 @@ public class Piece {
             //adds the color to the name of the png to fetch
             coverIdentifier += this.owner.color;
 
-            //allots movesets per type
+            //allots move sets per type
             //also adds the piece type to the name of the png to fetch
             switch (type) {
                 case KING -> {
                     coverIdentifier += "King";
                     hasKingMoves = true;
-                    break;
                 }
                 case PAWN -> {
                     coverIdentifier += "Pawn";
                     hasPawnMoves = true;
-                    break;
                 }
                 case ROOK -> {
                     coverIdentifier += "Rook";
                     hasRookMoves = true;
-                    break;
                 }
                 case QUEEN -> {
                     coverIdentifier += "Queen";
                     hasRookMoves = true;
                     hasBishopMoves = true;
-                    break;
                 }
                 case BISHOP -> {
                     coverIdentifier += "Bishop";
                     hasBishopMoves = true;
-                    break;
                 }
                 case KNIGHT -> {
                     coverIdentifier += "Knight";
                     hasKnightMoves = true;
-                    break;
                 }
                 default -> {
                     System.out.println("Piece at " + this.x + ", " + this.y + "received unknown piece type.");
@@ -171,25 +166,209 @@ public class Piece {
             } else break;
         }
 
-
+        /*
         for (int i = 0; i < possibleMoves.length; i ++) {
             System.out.println(possibleMoves[i]);
         }
+        */
+
 
         return possibleMoves;
     }
 
-    public boolean[] addKingMoves(Tile[][] board) {
-        boolean[] possibleMoves = new boolean[] {false, false, false, false, false, false, false, false};
+    public int[] addKingMoves(Tile[][] board) {
+        int[] possibleMoves = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
         //indexes start at due north and rotate clockwise around the king.
 
         if (this.y - 1 > 0) {
+            if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE) {
+                possibleMoves[0] = 1;
+            }
 
+            if (this.x + 1 < board.length) {
+                if (board[this.x + 1][this.y - 1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[1] = 1;
+                }
+            }
+            if (this.x - 1 > 0) {
+                if (board[this.x-1][this.y-1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[7] = 1;
+                }
+            }
+        }
+
+        if (this.x + 1 < board.length) {
+            if (board[this.x+1][this.y].occupiedBy == Constants.NO_PIECE) {
+                possibleMoves[2] = 1;
+            }
+        }
+
+        if (this.x - 1 > 0) {
+            if (board[this.x-1][this.y].occupiedBy == Constants.NO_PIECE) {
+                possibleMoves[6] = 1;
+            }
+        }
+
+
+        if (this.y + 1 < board.length) {
+            if (board[this.x][this.y + 1].occupiedBy == Constants.NO_PIECE) {
+                possibleMoves[3] = 1;
+            }
+
+            if (this.x + 1 < board.length) {
+                if (board[this.x + 1][this.y + 1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[4] = 1;
+                }
+            }
+            if (this.x - 1 > 0) {
+                if (board[this.x-1][this.y+1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[5] = 1;
+                }
+            }
+        }
+
+        /*
+        for (int i = 0; i < possibleMoves.length; i ++) {
+            System.out.println(possibleMoves[i]);
+        }
+        */
+
+
+        return possibleMoves;
+    }
+
+    public int[] addKnightMoves(Tile[][] board) {
+        int[] possibleMoves = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
+
+        if (this.y - 1 > 0) {
+
+            if (this.x + 2 < board.length) {
+                if (board[this.x+2][this.y-1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[1] = 1;
+                }
+            }
+            if (this.x - 2 > 0) {
+                if (board[this.x-2][this.y-1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[6] = 1;
+                }
+            }
+
+            if (this.y - 2 > 0) {
+                if (this.x + 1 < board.length) {
+                    if (board[this.x + 1][this.y - 2].occupiedBy == Constants.NO_PIECE) {
+                        possibleMoves[0] = 1;
+                    }
+                }
+                if (this.x - 1 > 0) {
+                    if (board[this.x - 1][this.y - 2].occupiedBy == Constants.NO_PIECE) {
+                        possibleMoves[7] = 1;
+                    }
+                }
+            }
         }
 
         if (this.y + 1 < board.length) {
 
+            if (this.x + 2 < board.length) {
+                if (board[this.x+2][this.y+1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[2] = 1;
+                }
+            }
+            if (this.x - 2 > 0) {
+                if (board[this.x-2][this.y+1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[5] = 1;
+                }
+            }
+
+            if (this.y + 2 < board.length) {
+
+                if (this.x + 1 < board.length) {
+                    if (board[this.x + 1][this.y + 2].occupiedBy == Constants.NO_PIECE) {
+                        possibleMoves[3] = 1;
+                    }
+                }
+                if (this.x - 1 > 0) {
+                    if (board[this.x - 1][this.y + 2].occupiedBy == Constants.NO_PIECE) {
+                        possibleMoves[4] = 1;
+                    }
+                }
+
+            }
+
+        }
+
+        /*
+        for (int i = 0; i < possibleMoves.length; i ++) {
+            System.out.println(possibleMoves[i]);
+        }
+        */
+
+        return possibleMoves;
+    }
+
+    //oh, god here we go I hate pawns why do you do this
+    //why do you have to be special
+
+    public int[] addPawnMoves(Tile[][]board) {
+        //possible moves orientation
+        // . 0 .
+        // 1 0 2
+        // . P .
+
+        int[] possibleMoves = new int[] {0, 0, 0};
+
+        if (this.owner == Constants.PLAYER_ONE) {
+            if (this.y - 1 > 0) {
+                if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[0] = 1;
+                    if (isFirstTurn && this.y - 2 > 0) {
+                        if (board[this.x][this.y - 2].occupiedBy == Constants.NO_PIECE) {
+                            possibleMoves[0] = 2;
+                        }
+                    }
+                }
+                //capture things here
+            }
+        } else if (this.owner == Constants.PLAYER_TWO) {
+            if (this.y + 1 < board.length) {
+                if (board[this.x][this.y + 1].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[0] = 1;
+                    if (isFirstTurn && this.y + 2 < board.length) {
+                        if (board[this.x][this.y + 2].occupiedBy == Constants.NO_PIECE) {
+                            possibleMoves[0] = 2;
+                        }
+                    }
+                }
+                //capture things here
+            }
+        } else if (this.owner == Constants.PLAYER_THREE) {
+            if (this.firstX == 1) {
+                if (this.x + 1 < board.length) {
+                    if (board[this.x + 1][this.y].occupiedBy == Constants.NO_PIECE) {
+                        possibleMoves[0] = 1;
+                        if (isFirstTurn && this.x + 2 < board.length) {
+                            if (board[this.x + 2][this.y].occupiedBy == Constants.NO_PIECE) {
+                                possibleMoves[0] = 2;
+                            }
+                        }
+                    }
+                    //capture things here
+                }
+            }
+            if (this.firstX == 14) {
+                if (this.x - 1 > 0) {
+                    if (board[this.x - 1][this.y].occupiedBy == Constants.NO_PIECE) {
+                        possibleMoves[0] = 1;
+                        if (isFirstTurn && this.x - 2 > 0) {
+                            if (board[this.x - 2][this.y].occupiedBy == Constants.NO_PIECE) {
+                                possibleMoves[0] = 2;
+                            }
+                        }
+                    }
+                    //capture things here
+                }
+            }
         }
 
         return possibleMoves;
