@@ -12,7 +12,8 @@ public class Tile {
     public Image cover;
     public ImageView coverView;
     public Piece occupiedBy;
-    private int x, y;
+    public int x;
+    public int y;
 
     public Tile(int x, int y, Piece occupiedBy) {
 
@@ -61,15 +62,5 @@ public class Tile {
         return this.coverView;
     }
     */
-
-    public int[] getBounds() {
-        return new int[] {
-                (this.x * Constants.TILE_SIZE),
-                (this.x + 1 * Constants.TILE_SIZE),
-
-                (this.y * Constants.TILE_SIZE),
-                (this.y + 1 * Constants.TILE_SIZE)
-        };
-    }
 
 }

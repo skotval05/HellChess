@@ -3,10 +3,13 @@ package com.github.jingerjesus.thehellchess.game;
 import com.github.jingerjesus.thehellchess.control.Constants;
 import com.github.jingerjesus.thehellchess.control.GameController;
 import com.github.jingerjesus.thehellchess.control.UI;
+import com.github.jingerjesus.thehellchess.peripherals.FileInput;
+import javafx.scene.image.ImageView;
 
 
 public class Board {
     public Tile[][] tiles = new Tile[16][16];
+    public ImageView[][] highlights = new ImageView[16][16];
 
     public Board() {
         for (int i = 0; i < tiles.length; i ++) {
@@ -16,27 +19,18 @@ public class Board {
                 tiles[i][j] = new Tile(i * Constants.TILE_SIZE, j * Constants.TILE_SIZE, Constants.NO_PIECE);
                 UI.mainGroup.getChildren().add(tiles[i][j].coverView);
 
+                //highlight map init
+                highlights[i][j] = new ImageView(FileInput.getImage("Highlight"));
+                highlights[i][j].setX(i * Constants.TILE_SIZE); highlights[i][j].setY(j * Constants.TILE_SIZE);
+                highlights[i][j].setFitWidth(Constants.TILE_SIZE);
+                highlights[i][j].setFitHeight(Constants.TILE_SIZE);
+                UI.mainGroup.getChildren().add(highlights[i][j]);
+
             }
         }
     }
 
     public void updateBoard() {
-
-        //find every piece on the board
-        //get their coords
-        //call tile of same coords to update and change cover
-
-        // OR
-
-        //go over every possible x and y coord
-        //if a piece has those, update tile with same coord pair.
-
-        //THEN
-
-        //????
-        //profit
-
-
 
         for (int i = 0; i < tiles.length; i ++) {
             for (int j = 0; j < tiles[i].length; j ++) {
@@ -61,8 +55,13 @@ public class Board {
                         tiles[i][j].occupiedBy = GameController.playerThreePieces.get(k);
                     }
                 }
+
             }
         }
+    }
+
+    public void selectTile(Tile tile) {
+
     }
 
     public Piece pieceAt(int x, int y) {
@@ -72,14 +71,28 @@ public class Board {
     }
 
     public Tile getTileClicked(int mouseX, int mouseY) {
-        Tile clickedTile = null;
+
+        int[] temp = new int[] {0, 0, 0, 0};
 
         for (int y = 0; y < this.tiles.length; y ++) {
             for (int x = 0; x < this.tiles.length; x ++) {
 
+                temp[0] = x * Constants.TILE_SIZE;
+                temp[1] = temp[0] + Constants.TILE_SIZE;
+
+                temp[2] = y * Constants.TILE_SIZE;
+                temp[3] = temp[2] + Constants.TILE_SIZE;
+
+                if ( (temp[0] <= mouseX && mouseX < temp[1]) && (temp[2] <= mouseY && mouseY < temp[3]) ) {
+
+                    //this works :D
+                    //System.out.println("X: " + x + ", Y: " + y);
+
+                    return this.tiles[x][y];
+                }
             }
         }
 
-        return clickedTile;
+        return null;
     }
 }

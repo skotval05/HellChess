@@ -1,17 +1,20 @@
 package com.github.jingerjesus.thehellchess.control;
 
 import com.github.jingerjesus.thehellchess.game.Board;
+import com.github.jingerjesus.thehellchess.game.Tile;
 import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -21,6 +24,7 @@ public class UI extends Application {
     private Scene mainScene;
     public static Group mainGroup = new Group();
     private Board board = new Board();
+    private Tile tileClicked = null;
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -40,12 +44,23 @@ public class UI extends Application {
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("Mouse X: " + mouseEvent.getSceneX() + ", Mouse Y: " + mouseEvent.getSceneY());
 
+                tileClicked = board.getTileClicked((int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY());
+
+            }
+        });
+        stageM.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                loop.stop();
+                Platform.exit();
+                System.exit(0);
             }
         });
 
 
         stageM.show();
     }
+
 
 
 
@@ -59,6 +74,11 @@ public class UI extends Application {
             //1 FPS: 1.0 sec
             Duration.seconds(0.029),
             actionEvent -> {
+
+                if (tileClicked != null) {
+                    FileInput.selectTile(tileClicked);
+                }
+
                 board.updateBoard();
                 stageM.show();
             }
