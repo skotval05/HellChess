@@ -63,6 +63,8 @@ public class FileInput {
                 image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/SelectNone.png"));
             } else if (imageName.equals("Highlight")) {
                 image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/SelectHighlight.png"));
+            } else if (imageName.equals("Movable")) {
+                image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/SelectMovable.png"));
             } else {
                 image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/Tile.png"));
             }

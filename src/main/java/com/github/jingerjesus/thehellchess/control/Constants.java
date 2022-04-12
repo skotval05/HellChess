@@ -24,6 +24,10 @@ public class Constants {
         KING, QUEEN, NONE
     }
 
+    public static enum HighlightType {
+        SELECTED, MOVESPACE, CAPTURESPACE, NONE
+    }
+
 
 
 }

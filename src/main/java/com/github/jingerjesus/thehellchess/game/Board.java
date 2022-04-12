@@ -3,13 +3,11 @@ package com.github.jingerjesus.thehellchess.game;
 import com.github.jingerjesus.thehellchess.control.Constants;
 import com.github.jingerjesus.thehellchess.control.GameController;
 import com.github.jingerjesus.thehellchess.control.UI;
-import com.github.jingerjesus.thehellchess.peripherals.FileInput;
-import javafx.scene.image.ImageView;
 
 
 public class Board {
     public Tile[][] tiles = new Tile[16][16];
-    public ImageView[][] highlights = new ImageView[16][16];
+    public Highlight[][] highlights = new Highlight[16][16];
 
     public Board() {
         for (int i = 0; i < tiles.length; i ++) {
@@ -20,12 +18,9 @@ public class Board {
                 UI.mainGroup.getChildren().add(tiles[i][j].coverView);
 
                 //highlight map init
-                highlights[i][j] = new ImageView(FileInput.getImage("Highlight"));
-                highlights[i][j].setX(i * Constants.TILE_SIZE); highlights[i][j].setY(j * Constants.TILE_SIZE);
-                highlights[i][j].setFitWidth(Constants.TILE_SIZE);
-                highlights[i][j].setFitHeight(Constants.TILE_SIZE);
-                UI.mainGroup.getChildren().add(highlights[i][j]);
-
+                highlights[i][j] = new Highlight(i , j,
+                        Constants.HighlightType.NONE);
+                UI.mainGroup.getChildren().add(highlights[i][j].view);
             }
         }
     }
@@ -55,7 +50,18 @@ public class Board {
                         tiles[i][j].occupiedBy = GameController.playerThreePieces.get(k);
                     }
                 }
+            }
+        }
+    }
 
+    public void updateHighlights(Tile selectedTile) {
+        if (selectedTile != null) {
+            highlights[selectedTile.x][selectedTile.y].setHighlight(Constants.HighlightType.SELECTED);
+        } else {
+            for (int i = 0; i < highlights.length; i ++) {
+                for (int j = 0; j < highlights.length; j ++) {
+                    highlights[i][j].setHighlight(Constants.HighlightType.NONE);
+                }
             }
         }
     }

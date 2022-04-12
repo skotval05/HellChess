@@ -36,6 +36,9 @@ public class UI extends Application {
         stageM.setScene(mainScene);
 
         GameController.initPieces(true);
+        board.updateBoard();
+        board.pieceAt(0, 15).addRookMoves(board.tiles);
+        stageM.show();
         loop.setCycleCount(Animation.INDEFINITE);
         loop.play();
 

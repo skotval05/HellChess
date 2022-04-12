@@ -13,7 +13,7 @@ import com.github.jingerjesus.thehellchess.game.Player;
 */
 
 public class GameController {
-    private Player turn = Constants.PLAYER_ONE;
+    public static Player turn = Constants.PLAYER_ONE;
 
     public static ArrayList<Piece> playerOnePieces = new ArrayList<Piece>(32);
     public static ArrayList<Piece> playerTwoPieces = new ArrayList<Piece>(32);
@@ -31,7 +31,7 @@ public class GameController {
     public static void initPieces(boolean normalStart) {
         // if (normalStart) {
             for (int i = 0; i < 16; i ++) {
-                playerOnePieces.add(i, new Piece(Constants.PieceType.PAWN, i, 14, Constants.PLAYER_ONE));
+                //playerOnePieces.add(i, new Piece(Constants.PieceType.PAWN, i, 14, Constants.PLAYER_ONE));
                 playerTwoPieces.add(i, new Piece(Constants.PieceType.PAWN, i, 1, Constants.PLAYER_TWO));
             }
 

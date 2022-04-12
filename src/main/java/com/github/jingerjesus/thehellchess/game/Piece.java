@@ -1,6 +1,7 @@
 package com.github.jingerjesus.thehellchess.game;
 
 import com.github.jingerjesus.thehellchess.control.Constants;
+import com.github.jingerjesus.thehellchess.control.GameController;
 import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 import javafx.scene.image.Image;
 
@@ -121,11 +122,11 @@ public class Piece {
             } else break;
         }
 
-        /*
+        // /*
         for (int i = 0; i < possibleMoves.length; i ++) {
             System.out.println(possibleMoves[i]);
         }
-        */
+        // */
 
         return possibleMoves;
     }
