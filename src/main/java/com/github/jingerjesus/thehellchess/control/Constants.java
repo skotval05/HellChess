@@ -28,6 +28,11 @@ public class Constants {
         SELECTED, MOVESPACE, CAPTURESPACE, NONE
     }
 
+    //Interface constants
+    public static enum ClickType {
+        MOVING, SELECTING, UNDOING
+    }
+
 
 
 }

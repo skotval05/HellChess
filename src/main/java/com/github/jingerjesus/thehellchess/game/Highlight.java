@@ -66,5 +66,7 @@ public class Highlight {
                 image = FileInput.getImage("Empty");
             }
         }
+        this.view.setImage(image);
+        this.view.setOpacity(transparency);
     }
 }

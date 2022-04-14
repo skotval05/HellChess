@@ -25,8 +25,12 @@ public class UI extends Application {
     public static Group mainGroup = new Group();
     private Board board = new Board();
     private Tile tileClicked = null;
+    private Tile selectedTile = null;
+    private boolean movingClick = false;
+    private boolean selectingClick = true;
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
 
         //do ui design or dig up the old one we drew years ago
@@ -37,18 +41,52 @@ public class UI extends Application {
 
         GameController.initPieces(true);
         board.updateBoard();
-        board.pieceAt(0, 15).addRookMoves(board.tiles);
+        //board.pieceAt(0, 14).addPawnMoves(board.tiles);
         stageM.show();
         loop.setCycleCount(Animation.INDEFINITE);
         loop.play();
 
+
+        //piggyback off of this event since we hardly need threads
         mainScene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+
                 System.out.println("Mouse X: " + mouseEvent.getSceneX() + ", Mouse Y: " + mouseEvent.getSceneY());
+                //System.out.println(mouseEvent.getSceneX() / Constants.TILE_SIZE + " " + mouseEvent.getSceneY() / Constants.TILE_SIZE);
+                int x = (int)mouseEvent.getSceneX() / Constants.TILE_SIZE;
+                int y = (int)mouseEvent.getSceneY() / Constants.TILE_SIZE;
 
-                tileClicked = board.getTileClicked((int) mouseEvent.getSceneX(), (int) mouseEvent.getSceneY());
+                tileClicked = board.tiles[x][y];
+                /*
+                if (tileClicked != null) {
+                    if (board.pieceAt(tileClicked.x/Constants.TILE_SIZE, tileClicked.y/Constants.TILE_SIZE) != Constants.NO_PIECE
+                            && selectingClick &&
+                            board.pieceAt(tileClicked.x/Constants.TILE_SIZE, tileClicked.y/Constants.TILE_SIZE).owner == GameController.turn) {
+                        if (selectedTile != null) {
+                            board.highlights[selectedTile.x/32][selectedTile.y/32].setHighlight(Constants.HighlightType.NONE);
+                        }
+                        board.highlights[tileClicked.x/32][tileClicked.y/32].setHighlight(Constants.HighlightType.SELECTED);
+                        selectedTile = tileClicked;
 
+                        //selectingClick = false;
+                        //movingClick = true;
+                    } else {
+                        if (movingClick) {
+
+                        } else {
+                            System.out.println("No piece on this tile.");
+                        }
+
+                    }
+                } else System.out.println("No tile clicked.");
+
+                movingClick = false;
+                selectingClick = true;
+                GameController.cycleTurn();
+                board.updateBoard();
+                stageM.show();
+                */
             }
         });
         stageM.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -60,11 +98,7 @@ public class UI extends Application {
             }
         });
 
-
-        stageM.show();
     }
-
-
 
 
 
@@ -77,13 +111,35 @@ public class UI extends Application {
             //1 FPS: 1.0 sec
             Duration.seconds(0.029),
             actionEvent -> {
-
+                // /*
                 if (tileClicked != null) {
-                    FileInput.selectTile(tileClicked);
-                }
+                    if (board.pieceAt(tileClicked.x/Constants.TILE_SIZE, tileClicked.y/Constants.TILE_SIZE) != Constants.NO_PIECE
+                            && selectingClick &&
+                            board.pieceAt(tileClicked.x/Constants.TILE_SIZE, tileClicked.y/Constants.TILE_SIZE).owner == GameController.turn) {
+                        if (selectedTile != null) {
+                            board.highlights[selectedTile.x/32][selectedTile.y/32].setHighlight(Constants.HighlightType.NONE);
+                        }
+                        board.highlights[tileClicked.x/32][tileClicked.y/32].setHighlight(Constants.HighlightType.SELECTED);
+                        selectedTile = tileClicked;
 
+                        //selectingClick = false;
+                        //movingClick = true;
+                    } else {
+                        if (movingClick) {
+
+                        } else {
+                            System.out.println("No piece on this tile.");
+                        }
+
+                    }
+                } else System.out.println("No tile clicked.");
+
+                movingClick = false;
+                selectingClick = true;
+                //GameController.cycleTurn();
                 board.updateBoard();
                 stageM.show();
+                // */
             }
     );
 

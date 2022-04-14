@@ -1,10 +1,6 @@
 package com.github.jingerjesus.thehellchess.peripherals;
 
-import com.github.jingerjesus.thehellchess.control.Constants;
-import com.github.jingerjesus.thehellchess.game.Tile;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -74,26 +70,4 @@ public class FileInput {
 
         return image;
     }
-
-    public static ImageView selectTile(Tile selectedTile) {
-        Image image;
-        ImageView view = null;
-
-        try {
-            image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/SelectHighlight.png"));
-            view = new ImageView(image);
-            view.setX(selectedTile.x * Constants.TILE_SIZE);
-            view.setY(selectedTile.y * Constants.TILE_SIZE);
-            view.setFitHeight(Constants.TILE_SIZE);
-            view.setFitWidth(Constants.TILE_SIZE);
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return view;
-    }
-
-
 }

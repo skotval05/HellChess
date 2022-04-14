@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 public class Piece {
     public Constants.PieceType type;
     public boolean isFirstTurn = true;
-    private Player owner;
+    public Player owner;
     public Image cover;
     public int x, y;
     public int firstX;
@@ -94,6 +94,8 @@ public class Piece {
             if (this.y - i > 0) {
                 if (board[this.x][this.y-i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[0] ++;
+                } else if (board[this.x][this.y-i].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[0] ++; break;
                 } else break;
             } else break;
         }
@@ -102,6 +104,8 @@ public class Piece {
             if (this.x + i < board.length) {
                 if (board[this.x + i][this.y].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[1] ++;
+                } else if (board[this.x + i][this.y].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[1] ++; break;
                 } else break;
             } else break;
         }
@@ -110,6 +114,8 @@ public class Piece {
             if (this.y + i < board.length) {
                 if (board[this.x][this.y + i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[2] ++;
+                } else if (board[this.x][this.y+i].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[2] ++; break;
                 } else break;
             } else break;
         }
@@ -118,6 +124,8 @@ public class Piece {
             if (this.x - i > 0) {
                 if (board[this.x - i][this.y].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[3] ++;
+                } else if (board[this.x - i][this.y].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[3] ++; break;
                 } else break;
             } else break;
         }
@@ -139,6 +147,8 @@ public class Piece {
             if (this.y - i > 0 && this.x + i < board.length) {
                 if (board[this.x+i][this.y-i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[0] ++;
+                } else if (board[this.x + i][this.y-i].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[0] ++; break;
                 } else break;
             } else break;
         }
@@ -147,6 +157,8 @@ public class Piece {
             if (this.x + i < board.length && y + i < board.length) {
                 if (board[this.x + i][this.y + i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[1] ++;
+                } else if (board[this.x + i][this.y+1].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[1] ++; break;
                 } else break;
             } else break;
         }
@@ -155,6 +167,8 @@ public class Piece {
             if (this.y + i < board.length && this.x - i > 0) {
                 if (board[this.x - i][this.y + i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[2] ++;
+                } else if (board[this.x - i][this.y+i].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[2] ++; break;
                 } else break;
             } else break;
         }
@@ -163,15 +177,17 @@ public class Piece {
             if (this.x - i > 0 && this.y - i < board.length) {
                 if (board[this.x - i][this.y - i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[3] ++;
+                } else if (board[this.x - i][this.y-i].occupiedBy.owner != GameController.turn) {
+                    possibleMoves[3] ++; break;
                 } else break;
             } else break;
         }
 
-        /*
+        // /*
         for (int i = 0; i < possibleMoves.length; i ++) {
             System.out.println(possibleMoves[i]);
         }
-        */
+        // */
 
 
         return possibleMoves;
@@ -183,47 +199,55 @@ public class Piece {
         //indexes start at due north and rotate clockwise around the king.
 
         if (this.y - 1 > 0) {
-            if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE) {
+            if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x][this.y-1].occupiedBy.owner != GameController.turn) {
                 possibleMoves[0] = 1;
             }
 
             if (this.x + 1 < board.length) {
-                if (board[this.x + 1][this.y - 1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x + 1][this.y - 1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x+1][this.y-1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[1] = 1;
                 }
             }
             if (this.x - 1 > 0) {
-                if (board[this.x-1][this.y-1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x-1][this.y-1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x-1][this.y-1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[7] = 1;
                 }
             }
         }
 
         if (this.x + 1 < board.length) {
-            if (board[this.x+1][this.y].occupiedBy == Constants.NO_PIECE) {
+            if (board[this.x+1][this.y].occupiedBy == Constants.NO_PIECE
+                        || board[this.x+1][this.y].occupiedBy.owner != GameController.turn) {
                 possibleMoves[2] = 1;
             }
         }
 
         if (this.x - 1 > 0) {
-            if (board[this.x-1][this.y].occupiedBy == Constants.NO_PIECE) {
+            if (board[this.x-1][this.y].occupiedBy == Constants.NO_PIECE
+                        || board[this.x-1][this.y].occupiedBy.owner != GameController.turn) {
                 possibleMoves[6] = 1;
             }
         }
 
 
         if (this.y + 1 < board.length) {
-            if (board[this.x][this.y + 1].occupiedBy == Constants.NO_PIECE) {
+            if (board[this.x][this.y + 1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x][this.y+1].occupiedBy.owner != GameController.turn) {
                 possibleMoves[3] = 1;
             }
 
             if (this.x + 1 < board.length) {
-                if (board[this.x + 1][this.y + 1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x + 1][this.y + 1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x+1][this.y+1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[4] = 1;
                 }
             }
             if (this.x - 1 > 0) {
-                if (board[this.x-1][this.y+1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x-1][this.y+1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x-1][this.y+1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[5] = 1;
                 }
             }
@@ -245,24 +269,28 @@ public class Piece {
         if (this.y - 1 > 0) {
 
             if (this.x + 2 < board.length) {
-                if (board[this.x+2][this.y-1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x+2][this.y-1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x+2][this.y-1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[1] = 1;
                 }
             }
             if (this.x - 2 > 0) {
-                if (board[this.x-2][this.y-1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x-2][this.y-1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x-2][this.y-1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[6] = 1;
                 }
             }
 
             if (this.y - 2 > 0) {
                 if (this.x + 1 < board.length) {
-                    if (board[this.x + 1][this.y - 2].occupiedBy == Constants.NO_PIECE) {
+                    if (board[this.x + 1][this.y - 2].occupiedBy == Constants.NO_PIECE
+                            || board[this.x+1][this.y-2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[0] = 1;
                     }
                 }
                 if (this.x - 1 > 0) {
-                    if (board[this.x - 1][this.y - 2].occupiedBy == Constants.NO_PIECE) {
+                    if (board[this.x - 1][this.y - 2].occupiedBy == Constants.NO_PIECE
+                            || board[this.x-1][this.y-2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[7] = 1;
                     }
                 }
@@ -272,12 +300,14 @@ public class Piece {
         if (this.y + 1 < board.length) {
 
             if (this.x + 2 < board.length) {
-                if (board[this.x+2][this.y+1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x+2][this.y+1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x+2][this.y+1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[2] = 1;
                 }
             }
             if (this.x - 2 > 0) {
-                if (board[this.x-2][this.y+1].occupiedBy == Constants.NO_PIECE) {
+                if (board[this.x-2][this.y+1].occupiedBy == Constants.NO_PIECE
+                        || board[this.x-2][this.y+1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[5] = 1;
                 }
             }
@@ -285,12 +315,14 @@ public class Piece {
             if (this.y + 2 < board.length) {
 
                 if (this.x + 1 < board.length) {
-                    if (board[this.x + 1][this.y + 2].occupiedBy == Constants.NO_PIECE) {
+                    if (board[this.x + 1][this.y + 2].occupiedBy == Constants.NO_PIECE
+                            || board[this.x+1][this.y+2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[3] = 1;
                     }
                 }
                 if (this.x - 1 > 0) {
-                    if (board[this.x - 1][this.y + 2].occupiedBy == Constants.NO_PIECE) {
+                    if (board[this.x - 1][this.y + 2].occupiedBy == Constants.NO_PIECE
+                            || board[this.x-1][this.y+2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[4] = 1;
                     }
                 }
@@ -329,7 +361,18 @@ public class Piece {
                         }
                     }
                 }
-                //capture things here
+                if (this.x - 1 > 0) {
+                    if (board[this.x-1][this.y-1].occupiedBy.owner != GameController.turn
+                    && board[this.x-1][this.y-1].occupiedBy != Constants.NO_PIECE) {
+                        possibleMoves[1] = 1;
+                    }
+                }
+                if (this.x + 1 < board.length) {
+                    if (board[this.x+1][this.y-1].occupiedBy.owner != GameController.turn
+                            && board[this.x+1][this.y-1].occupiedBy != Constants.NO_PIECE) {
+                        possibleMoves[2] = 1;
+                    }
+                }
             }
         } else if (this.owner == Constants.PLAYER_TWO) {
             if (this.y + 1 < board.length) {
@@ -341,7 +384,18 @@ public class Piece {
                         }
                     }
                 }
-                //capture things here
+                if (this.x - 1 > 0) {
+                    if (board[this.x-1][this.y+1].occupiedBy.owner != GameController.turn
+                            && board[this.x-1][this.y+1].occupiedBy != Constants.NO_PIECE) {
+                        possibleMoves[2] = 1;
+                    }
+                }
+                if (this.x + 1 < board.length) {
+                    if (board[this.x+1][this.y+1].occupiedBy.owner != GameController.turn
+                            && board[this.x+1][this.y+1].occupiedBy != Constants.NO_PIECE) {
+                        possibleMoves[1] = 1;
+                    }
+                }
             }
         } else if (this.owner == Constants.PLAYER_THREE) {
             if (this.firstX == 1) {
@@ -354,7 +408,18 @@ public class Piece {
                             }
                         }
                     }
-                    //capture things here
+                    if (this.y - 1 > 0) {
+                        if (board[this.x+1][this.y-1].occupiedBy.owner != GameController.turn
+                        && board[this.x+1][this.y-1].occupiedBy != Constants.NO_PIECE) {
+                            possibleMoves[1] = 1;
+                        }
+                    }
+                    if (this.y + 1 < board.length) {
+                        if (board[this.x+1][this.y+1].occupiedBy.owner != GameController.turn
+                                && board[this.x+1][this.y+1].occupiedBy != Constants.NO_PIECE) {
+                            possibleMoves[2] = 1;
+                        }
+                    }
                 }
             }
             if (this.firstX == 14) {
@@ -367,10 +432,27 @@ public class Piece {
                             }
                         }
                     }
-                    //capture things here
+                    if (this.y - 1 > 0) {
+                        if (board[this.x-1][this.y-1].occupiedBy.owner != GameController.turn
+                                && board[this.x-1][this.y-1].occupiedBy != Constants.NO_PIECE) {
+                            possibleMoves[2] = 1;
+                        }
+                    }
+                    if (this.y + 1 < board.length) {
+                        if (board[this.x-1][this.y+1].occupiedBy.owner != GameController.turn
+                                && board[this.x-1][this.y+1].occupiedBy != Constants.NO_PIECE) {
+                            possibleMoves[1] = 1;
+                        }
+                    }
                 }
             }
         }
+
+        /*
+        for (int i = 0; i < possibleMoves.length; i ++) {
+            System.out.println(possibleMoves[i]);
+        }
+        */
 
         return possibleMoves;
     }

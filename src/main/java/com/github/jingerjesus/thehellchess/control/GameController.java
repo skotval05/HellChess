@@ -21,7 +21,7 @@ public class GameController {
 
 
 
-    public void cycleTurn() {
+    public static void cycleTurn() {
         if (turn == Constants.PLAYER_ONE) turn = Constants.PLAYER_TWO;
         else if (turn == Constants.PLAYER_TWO) turn = Constants.PLAYER_THREE;
         else if (turn == Constants.PLAYER_THREE) turn = Constants.PLAYER_ONE;
@@ -31,7 +31,7 @@ public class GameController {
     public static void initPieces(boolean normalStart) {
         // if (normalStart) {
             for (int i = 0; i < 16; i ++) {
-                //playerOnePieces.add(i, new Piece(Constants.PieceType.PAWN, i, 14, Constants.PLAYER_ONE));
+                playerOnePieces.add(i, new Piece(Constants.PieceType.PAWN, i, 14, Constants.PLAYER_ONE));
                 playerTwoPieces.add(i, new Piece(Constants.PieceType.PAWN, i, 1, Constants.PLAYER_TWO));
             }
 

@@ -76,29 +76,19 @@ public class Board {
         return this.tiles[x][y].occupiedBy;
     }
 
+    /*
     public Tile getTileClicked(int mouseX, int mouseY) {
-
-        int[] temp = new int[] {0, 0, 0, 0};
-
-        for (int y = 0; y < this.tiles.length; y ++) {
-            for (int x = 0; x < this.tiles.length; x ++) {
-
-                temp[0] = x * Constants.TILE_SIZE;
-                temp[1] = temp[0] + Constants.TILE_SIZE;
-
-                temp[2] = y * Constants.TILE_SIZE;
-                temp[3] = temp[2] + Constants.TILE_SIZE;
-
-                if ( (temp[0] <= mouseX && mouseX < temp[1]) && (temp[2] <= mouseY && mouseY < temp[3]) ) {
-
-                    //this works :D
-                    //System.out.println("X: " + x + ", Y: " + y);
-
-                    return this.tiles[x][y];
+        for (int i = 0; i < this.tiles.length; i ++) {
+            for (int j = 0; j < this.tiles.length; j ++) {
+                if (mouseX > i * Constants.TILE_SIZE && mouseX < (i + 1) * Constants.TILE_SIZE) {
+                    if (mouseY > j * Constants.TILE_SIZE && mouseY < (j + 1) * Constants.TILE_SIZE) {
+                        return this.tiles[i][j];
+                    }
                 }
             }
         }
-
         return null;
     }
+    */
+
 }
