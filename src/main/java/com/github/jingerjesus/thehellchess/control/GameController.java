@@ -9,7 +9,7 @@ import com.github.jingerjesus.thehellchess.game.Player;
     IMPORTANT NOTE:
     RED = PLAYER ONE
     BLUE = PLAYER TWO
-    GREEN = PLAYER THREE
+    GREEN = PLAYER THREe
 */
 
 public class GameController {

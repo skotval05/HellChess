@@ -48,6 +48,7 @@ public class UI extends Application {
 
 
         //piggyback off of this event since we hardly need threads
+        //love this dont we
         mainScene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
