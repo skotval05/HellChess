@@ -14,6 +14,7 @@ public class Piece {
     public int x, y;
     public int firstX;
     private String coverIdentifier = "";
+    public int[][] moveSets;
     private boolean hasPawnMoves = false, hasRookMoves = false, hasKnightMoves = false,
             hasBishopMoves = false, hasKingMoves = false;
         //ignoring Queen because her moves are an addition of Rook and Bishop.
@@ -77,6 +78,33 @@ public class Piece {
 
     }
 
+    public int[] addMovesOfType(Constants.PieceType type, Tile[][] board) {
+        switch (type) {
+            case ROOK -> {
+                return this.addRookMoves(board);
+            }
+            case QUEEN -> {
+                int[] a1 = this.addRookMoves(board);
+                int[] a2 = this.addBishopMoves(board);
+                int[] temp = new int[] {a1[0], a1[1], a1[2], a1[3], a2[0], a2[1], a2[2], a2[3]};
+                return temp;
+            }
+            case BISHOP -> {
+                return this.addBishopMoves(board);
+            }
+            case PAWN -> {
+                return this.addPawnMoves(board);
+            }
+            case KING -> {
+                return this.addKingMoves(board);
+            }
+            case KNIGHT -> {
+                return this.addKnightMoves(board);
+            }
+        }
+        return new int[] {0};
+    }
+
     public int[] addRookMoves(Tile[][] board) {
         //start at x and y
         //get distance to edge to not IOOB
@@ -91,7 +119,7 @@ public class Piece {
         //West: x --
 
         for (int i = 1; i < board.length; i ++) {
-            if (this.y - i > 0) {
+            if (this.y - i >= 0) {
                 if (board[this.x][this.y-i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[0] ++;
                 } else if (board[this.x][this.y-i].occupiedBy.owner != GameController.turn) {
@@ -121,7 +149,7 @@ public class Piece {
         }
 
         for (int i = 1; i < board.length; i ++) {
-            if (this.x - i > 0) {
+            if (this.x - i >= 0) {
                 if (board[this.x - i][this.y].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[3] ++;
                 } else if (board[this.x - i][this.y].occupiedBy.owner != GameController.turn) {
@@ -144,7 +172,7 @@ public class Piece {
         int[] possibleMoves = new int[] {0, 0, 0, 0};
 
         for (int i = 1; i < board.length; i ++) {
-            if (this.y - i > 0 && this.x + i < board.length) {
+            if (this.y - i >= 0 && this.x + i < board.length) {
                 if (board[this.x+i][this.y-i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[0] ++;
                 } else if (board[this.x + i][this.y-i].occupiedBy.owner != GameController.turn) {
@@ -164,7 +192,7 @@ public class Piece {
         }
 
         for (int i = 1; i < board.length; i ++) {
-            if (this.y + i < board.length && this.x - i > 0) {
+            if (this.y + i < board.length && this.x - i >= 0) {
                 if (board[this.x - i][this.y + i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[2] ++;
                 } else if (board[this.x - i][this.y+i].occupiedBy.owner != GameController.turn) {
@@ -174,7 +202,7 @@ public class Piece {
         }
 
         for (int i = 1; i < board.length; i ++) {
-            if (this.x - i > 0 && this.y - i < board.length) {
+            if (this.x - i >= 0 && this.y - i < board.length) {
                 if (board[this.x - i][this.y - i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[3] ++;
                 } else if (board[this.x - i][this.y-i].occupiedBy.owner != GameController.turn) {
@@ -198,7 +226,7 @@ public class Piece {
 
         //indexes start at due north and rotate clockwise around the king.
 
-        if (this.y - 1 > 0) {
+        if (this.y - 1 >= 0) {
             if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE
                         || board[this.x][this.y-1].occupiedBy.owner != GameController.turn) {
                 possibleMoves[0] = 1;
@@ -210,7 +238,7 @@ public class Piece {
                     possibleMoves[1] = 1;
                 }
             }
-            if (this.x - 1 > 0) {
+            if (this.x - 1 >= 0) {
                 if (board[this.x-1][this.y-1].occupiedBy == Constants.NO_PIECE
                         || board[this.x-1][this.y-1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[7] = 1;
@@ -225,7 +253,7 @@ public class Piece {
             }
         }
 
-        if (this.x - 1 > 0) {
+        if (this.x - 1 >= 0) {
             if (board[this.x-1][this.y].occupiedBy == Constants.NO_PIECE
                         || board[this.x-1][this.y].occupiedBy.owner != GameController.turn) {
                 possibleMoves[6] = 1;
@@ -245,7 +273,7 @@ public class Piece {
                     possibleMoves[4] = 1;
                 }
             }
-            if (this.x - 1 > 0) {
+            if (this.x - 1 >= 0) {
                 if (board[this.x-1][this.y+1].occupiedBy == Constants.NO_PIECE
                         || board[this.x-1][this.y+1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[5] = 1;
@@ -266,7 +294,7 @@ public class Piece {
     public int[] addKnightMoves(Tile[][] board) {
         int[] possibleMoves = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
-        if (this.y - 1 > 0) {
+        if (this.y - 1 >= 0) {
 
             if (this.x + 2 < board.length) {
                 if (board[this.x+2][this.y-1].occupiedBy == Constants.NO_PIECE
@@ -274,21 +302,21 @@ public class Piece {
                     possibleMoves[1] = 1;
                 }
             }
-            if (this.x - 2 > 0) {
+            if (this.x - 2 >= 0) {
                 if (board[this.x-2][this.y-1].occupiedBy == Constants.NO_PIECE
                         || board[this.x-2][this.y-1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[6] = 1;
                 }
             }
 
-            if (this.y - 2 > 0) {
+            if (this.y - 2 >= 0) {
                 if (this.x + 1 < board.length) {
                     if (board[this.x + 1][this.y - 2].occupiedBy == Constants.NO_PIECE
                             || board[this.x+1][this.y-2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[0] = 1;
                     }
                 }
-                if (this.x - 1 > 0) {
+                if (this.x - 1 >= 0) {
                     if (board[this.x - 1][this.y - 2].occupiedBy == Constants.NO_PIECE
                             || board[this.x-1][this.y-2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[7] = 1;
@@ -305,7 +333,7 @@ public class Piece {
                     possibleMoves[2] = 1;
                 }
             }
-            if (this.x - 2 > 0) {
+            if (this.x - 2 >= 0) {
                 if (board[this.x-2][this.y+1].occupiedBy == Constants.NO_PIECE
                         || board[this.x-2][this.y+1].occupiedBy.owner != GameController.turn) {
                     possibleMoves[5] = 1;
@@ -320,7 +348,7 @@ public class Piece {
                         possibleMoves[3] = 1;
                     }
                 }
-                if (this.x - 1 > 0) {
+                if (this.x - 1 >= 0) {
                     if (board[this.x - 1][this.y + 2].occupiedBy == Constants.NO_PIECE
                             || board[this.x-1][this.y+2].occupiedBy.owner != GameController.turn) {
                         possibleMoves[4] = 1;
@@ -352,7 +380,7 @@ public class Piece {
         int[] possibleMoves = new int[] {0, 0, 0};
 
         if (this.owner == Constants.PLAYER_ONE) {
-            if (this.y - 1 > 0) {
+            if (this.y - 1 >= 0) {
                 if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[0] = 1;
                     if (isFirstTurn && this.y - 2 > 0) {
@@ -361,7 +389,7 @@ public class Piece {
                         }
                     }
                 }
-                if (this.x - 1 > 0) {
+                if (this.x - 1 >= 0) {
                     if (board[this.x-1][this.y-1].occupiedBy.owner != GameController.turn
                     && board[this.x-1][this.y-1].occupiedBy != Constants.NO_PIECE) {
                         possibleMoves[1] = 1;
@@ -384,7 +412,7 @@ public class Piece {
                         }
                     }
                 }
-                if (this.x - 1 > 0) {
+                if (this.x - 1 >= 0) {
                     if (board[this.x-1][this.y+1].occupiedBy.owner != GameController.turn
                             && board[this.x-1][this.y+1].occupiedBy != Constants.NO_PIECE) {
                         possibleMoves[2] = 1;
@@ -408,7 +436,7 @@ public class Piece {
                             }
                         }
                     }
-                    if (this.y - 1 > 0) {
+                    if (this.y - 1 >= 0) {
                         if (board[this.x+1][this.y-1].occupiedBy.owner != GameController.turn
                         && board[this.x+1][this.y-1].occupiedBy != Constants.NO_PIECE) {
                             possibleMoves[1] = 1;
@@ -423,7 +451,7 @@ public class Piece {
                 }
             }
             if (this.firstX == 14) {
-                if (this.x - 1 > 0) {
+                if (this.x - 1 >= 0) {
                     if (board[this.x - 1][this.y].occupiedBy == Constants.NO_PIECE) {
                         possibleMoves[0] = 1;
                         if (isFirstTurn && this.x - 2 > 0) {
@@ -432,7 +460,7 @@ public class Piece {
                             }
                         }
                     }
-                    if (this.y - 1 > 0) {
+                    if (this.y - 1 >= 0) {
                         if (board[this.x-1][this.y-1].occupiedBy.owner != GameController.turn
                                 && board[this.x-1][this.y-1].occupiedBy != Constants.NO_PIECE) {
                             possibleMoves[2] = 1;

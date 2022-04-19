@@ -2,6 +2,7 @@ package com.github.jingerjesus.thehellchess.control;
 
 import com.github.jingerjesus.thehellchess.game.Piece;
 import com.github.jingerjesus.thehellchess.game.Player;
+import com.github.jingerjesus.thehellchess.game.Tile;
 
 public class Constants {
 
@@ -18,6 +19,7 @@ public class Constants {
     //Board/tile constants
     public static final int TILE_SIZE = 32;
     public static final Piece NO_PIECE = new Piece(PieceType.NONE, -1, -1, NO_PLAYER);
+    public static final Tile NO_TILE = new Tile(-1,-1,Constants.NO_PIECE);
 
     public static enum PieceType {
         PAWN, ROOK, KNIGHT, BISHOP,
