@@ -105,7 +105,7 @@ public class Piece {
         return new int[] {0};
     }
 
-    public int[] addRookMoves(Tile[][] board) {
+    private int[] addRookMoves(Tile[][] board) {
         //start at x and y
         //get distance to edge to not IOOB
         //iterate thru ray in each direction
@@ -167,7 +167,7 @@ public class Piece {
         return possibleMoves;
     }
 
-    public int[] addBishopMoves(Tile[][] board) {
+    private int[] addBishopMoves(Tile[][] board) {
 
         int[] possibleMoves = new int[] {0, 0, 0, 0};
 
@@ -221,7 +221,7 @@ public class Piece {
         return possibleMoves;
     }
 
-    public int[] addKingMoves(Tile[][] board) {
+    private int[] addKingMoves(Tile[][] board) {
         int[] possibleMoves = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
         //indexes start at due north and rotate clockwise around the king.
@@ -291,7 +291,7 @@ public class Piece {
         return possibleMoves;
     }
 
-    public int[] addKnightMoves(Tile[][] board) {
+    private int[] addKnightMoves(Tile[][] board) {
         int[] possibleMoves = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
         if (this.y - 1 >= 0) {

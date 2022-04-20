@@ -13,7 +13,7 @@ public class Highlight {
     public Image image;
     public int x, y;
     public double transparency;
-    public Constants.HighlightType type;
+    private Constants.HighlightType type;
 
     public Highlight(int x, int y, Constants.HighlightType type) {
         this.x = x;
@@ -24,18 +24,22 @@ public class Highlight {
             case SELECTED -> {
                 transparency = 0.33;
                 image = FileInput.getImage("Highlight");
+                type = Constants.HighlightType.SELECTED;
             }
             case MOVESPACE -> {
                 transparency = 0.33;
                 image = FileInput.getImage("Movable");
+                type = Constants.HighlightType.MOVESPACE;
             }
             case CAPTURESPACE -> {
                 transparency = 0.25;
                 image = FileInput.getImage("Highlight");
+                type = Constants.HighlightType.CAPTURESPACE;
             }
             default -> {
                 transparency = 0.0;
                 image = FileInput.getImage("Empty");
+                type = Constants.HighlightType.NONE;
             }
         }
 
@@ -52,21 +56,30 @@ public class Highlight {
             case SELECTED -> {
                 transparency = 0.33;
                 image = FileInput.getImage("Highlight");
+                type = Constants.HighlightType.SELECTED;
             }
             case MOVESPACE -> {
                 transparency = 0.33;
                 image = FileInput.getImage("Movable");
+                type = Constants.HighlightType.MOVESPACE;
             }
             case CAPTURESPACE -> {
                 transparency = 0.25;
                 image = FileInput.getImage("Highlight");
+                type = Constants.HighlightType.CAPTURESPACE;
             }
             default -> {
                 transparency = 0.0;
                 image = FileInput.getImage("Empty");
+                type = Constants.HighlightType.NONE;
             }
         }
         this.view.setImage(image);
         this.view.setOpacity(transparency);
     }
+
+    public Constants.HighlightType getHighlight() {
+        return this.type;
+    }
+
 }

@@ -26,6 +26,7 @@ public class GameController {
         else if (turn == Constants.PLAYER_TWO) turn = Constants.PLAYER_THREE;
         else if (turn == Constants.PLAYER_THREE) turn = Constants.PLAYER_ONE;
         else turn = Constants.NO_PLAYER;
+
     }
 
     public static void initPieces(boolean normalStart) {
@@ -104,5 +105,7 @@ public class GameController {
 
         // }
     }
+
+    public static void movePiece() {}
 
 }

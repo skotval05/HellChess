@@ -4,23 +4,18 @@ import com.github.jingerjesus.thehellchess.game.Board;
 import com.github.jingerjesus.thehellchess.game.Piece;
 import com.github.jingerjesus.thehellchess.game.Player;
 import com.github.jingerjesus.thehellchess.game.Tile;
-import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-
-import java.io.IOException;
 
 public class UI extends Application {
     private Stage stageM = new Stage();
@@ -60,7 +55,7 @@ public class UI extends Application {
 
                 selectedTile = board.tiles[mouseTileX][mouseTileY];
 
-                if (selectedTile != null && isValidSelect(selectedTile, GameController.turn)) {
+                if (selectedTile != null && isValidSelect(selectedTile, GameController.turn) && selectedTile.occupiedBy != Constants.NO_PIECE) {
 
                     board.showMoves(selectedTile.occupiedBy.addMovesOfType(selectedTile.occupiedBy.type, board.tiles), selectedTile.occupiedBy);
 
@@ -80,12 +75,35 @@ public class UI extends Application {
 
                 movingTile = board.tiles[mouseTileX][mouseTileY];
 
-                if (selectedTile != null) {
+                if (selectedTile != null && movingTile != selectedTile && selectedTile.occupiedBy != Constants.NO_PIECE) {
                     board.highlights[selectedTile.x / Constants.TILE_SIZE][selectedTile.y / Constants.TILE_SIZE].setHighlight(Constants.HighlightType.NONE);
 
-                    board.removeHighlights();
+                    if (isValidMove(movingTile)) {
 
+                        if (movingTile.occupiedBy != Constants.NO_PIECE) {
+                            Piece remove = board.pieceAt(selectedTile.x/Constants.TILE_SIZE, selectedTile.y/Constants.TILE_SIZE);
+                            if (Constants.PLAYER_ONE.equals(remove.owner)) {
+                                GameController.playerOnePieces.remove(remove);
+                            } else if (Constants.PLAYER_TWO.equals(remove.owner)) {
+                                GameController.playerTwoPieces.remove(remove);
+                            } else if (Constants.PLAYER_THREE.equals(remove.owner)) {
+                                GameController.playerThreePieces.remove(remove);
+                            }
+                            remove.x = -1;
+                            remove.y = -1;
+                        }
+
+                        selectedTile.occupiedBy.x = movingTile.x/Constants.TILE_SIZE;
+                        selectedTile.occupiedBy.y = movingTile.y/Constants.TILE_SIZE;
+                        selectedTile.occupiedBy.isFirstTurn = false;
+
+                        GameController.cycleTurn();
+                        board.updateBoard();
+
+                    }
                 }
+
+                board.removeHighlights();
 
             }
         });
@@ -107,6 +125,19 @@ public class UI extends Application {
         if (tile.occupiedBy == Constants.NO_PIECE || tile.occupiedBy.owner != turn) {
             temp = false;
         }
+
+        return temp;
+    }
+
+    private boolean isValidMove(Tile tile) {
+        boolean temp = true;
+
+        if (board.highlights[tile.x/Constants.TILE_SIZE][tile.y/Constants.TILE_SIZE].getHighlight() == Constants.HighlightType.NONE
+        || board.highlights[tile.x/Constants.TILE_SIZE][tile.y/Constants.TILE_SIZE].getHighlight() == Constants.HighlightType.SELECTED) {
+            temp = false;
+        }
+
+        System.out.println("Is that drag a valid move: " + temp);
 
         return temp;
     }

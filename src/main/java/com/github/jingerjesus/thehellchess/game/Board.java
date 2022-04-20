@@ -3,7 +3,7 @@ package com.github.jingerjesus.thehellchess.game;
 import com.github.jingerjesus.thehellchess.control.Constants;
 import com.github.jingerjesus.thehellchess.control.GameController;
 import com.github.jingerjesus.thehellchess.control.UI;
-import com.github.jingerjesus.thehellchess.game.Highlight;
+import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 
 
 public class Board {
@@ -31,6 +31,9 @@ public class Board {
         for (int i = 0; i < tiles.length; i ++) {
             for (int j = 0; j < tiles[i].length; j ++) {
 
+                tiles[i][j].coverView.setImage(FileInput.getImage("Tile"));
+                tiles[i][j].occupiedBy = Constants.NO_PIECE;
+
                 for (int k = 0; k < GameController.playerOnePieces.size(); k ++) {
                     if (GameController.playerOnePieces.get(k).x == i && GameController.playerOnePieces.get(k).y == j) {
                         tiles[i][j].coverView.setImage(GameController.playerOnePieces.get(k).cover);
@@ -50,18 +53,6 @@ public class Board {
                         tiles[i][j].coverView.setImage(GameController.playerThreePieces.get(k).cover);
                         tiles[i][j].occupiedBy = GameController.playerThreePieces.get(k);
                     }
-                }
-            }
-        }
-    }
-
-    public void updateHighlights(Tile selectedTile) {
-        if (selectedTile != null) {
-            highlights[selectedTile.x][selectedTile.y].setHighlight(Constants.HighlightType.SELECTED);
-        } else {
-            for (int i = 0; i < highlights.length; i ++) {
-                for (int j = 0; j < highlights.length; j ++) {
-                    highlights[i][j].setHighlight(Constants.HighlightType.NONE);
                 }
             }
         }
@@ -236,7 +227,7 @@ public class Board {
         }
     }
 
-    private Piece pieceAt(int x, int y) {
+    public Piece pieceAt(int x, int y) {
         if (this.tiles[x][y].occupiedBy.equals(Constants.NO_PIECE))
             System.out.println("No Piece Here");
         return this.tiles[x][y].occupiedBy;
