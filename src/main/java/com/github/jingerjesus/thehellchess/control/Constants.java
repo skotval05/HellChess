@@ -3,6 +3,7 @@ package com.github.jingerjesus.thehellchess.control;
 import com.github.jingerjesus.thehellchess.game.Piece;
 import com.github.jingerjesus.thehellchess.game.Player;
 import com.github.jingerjesus.thehellchess.game.Tile;
+import javafx.scene.paint.Color;
 
 public class Constants {
 
@@ -35,6 +36,8 @@ public class Constants {
         MOVING, SELECTING, UNDOING
     }
 
-
+    public static final Color playerOne = Color.rgb(237, 28, 36);
+    public static final Color playerTwo = Color.rgb(63, 72, 204);
+    public static final Color playerThree = Color.rgb(34, 177, 76);
 
 }

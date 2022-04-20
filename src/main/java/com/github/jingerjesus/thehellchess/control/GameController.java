@@ -9,7 +9,7 @@ import com.github.jingerjesus.thehellchess.game.Player;
     IMPORTANT NOTE:
     RED = PLAYER ONE
     BLUE = PLAYER TWO
-    GREEN = PLAYER THREe
+    GREEN = PLAYER THREE
 */
 
 public class GameController {
@@ -22,9 +22,18 @@ public class GameController {
 
 
     public static void cycleTurn() {
-        if (turn == Constants.PLAYER_ONE) turn = Constants.PLAYER_TWO;
-        else if (turn == Constants.PLAYER_TWO) turn = Constants.PLAYER_THREE;
-        else if (turn == Constants.PLAYER_THREE) turn = Constants.PLAYER_ONE;
+        if (turn == Constants.PLAYER_ONE) {
+            turn = Constants.PLAYER_TWO;
+            UI.mainScene.setFill(Constants.playerTwo);
+        }
+        else if (turn == Constants.PLAYER_TWO) {
+            UI.mainScene.setFill(Constants.playerThree);
+            turn = Constants.PLAYER_THREE;
+        }
+        else if (turn == Constants.PLAYER_THREE) {
+            turn = Constants.PLAYER_ONE;
+            UI.mainScene.setFill(Constants.playerOne);
+        }
         else turn = Constants.NO_PLAYER;
 
     }

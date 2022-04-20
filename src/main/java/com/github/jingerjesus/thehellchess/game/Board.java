@@ -172,10 +172,10 @@ public class Board {
                         highlights[piece.x][piece.y + i].setHighlight(Constants.HighlightType.MOVESPACE);
                     }
                     if (possibleMoves[1] == 1) {
-                        highlights[piece.x+1][piece.y-1].setHighlight(Constants.HighlightType.MOVESPACE);
+                        highlights[piece.x+1][piece.y+1].setHighlight(Constants.HighlightType.MOVESPACE);
                     }
                     if (possibleMoves[2] == 1) {
-                        highlights[piece.x-1][piece.y-1].setHighlight(Constants.HighlightType.MOVESPACE);
+                        highlights[piece.x-1][piece.y+1].setHighlight(Constants.HighlightType.MOVESPACE);
                     }
                 } else if (piece.owner == Constants.PLAYER_THREE) {
                     if (piece.firstX == 1) {
@@ -193,10 +193,10 @@ public class Board {
                             highlights[piece.x-i][piece.y].setHighlight(Constants.HighlightType.MOVESPACE);
                         }
                         if (possibleMoves[1] == 1) {
-                            highlights[piece.x+1][piece.y+1].setHighlight(Constants.HighlightType.MOVESPACE);
+                            highlights[piece.x-1][piece.y+1].setHighlight(Constants.HighlightType.MOVESPACE);
                         }
                         if (possibleMoves[2] == 1) {
-                            highlights[piece.x+1][piece.y-1].setHighlight(Constants.HighlightType.MOVESPACE);
+                            highlights[piece.x-1][piece.y-1].setHighlight(Constants.HighlightType.MOVESPACE);
                         }
                     }
                 }

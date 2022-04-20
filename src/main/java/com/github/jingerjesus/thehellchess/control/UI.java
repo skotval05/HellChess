@@ -22,7 +22,7 @@ import javafx.util.Duration;
 
 public class UI extends Application {
     private Stage stageM = new Stage();
-    private Scene mainScene;
+    public static Scene mainScene;
     public static Group mainGroup = new Group();
     private Board board = new Board();
     private Tile selectedTile = null;
@@ -34,6 +34,8 @@ public class UI extends Application {
         //do ui design or dig up the old one we drew years ago
         //board is uhhh 16x16 (x7 possibly if we get this standard board working)
         mainScene = new Scene(mainGroup, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        mainScene.setFill(Constants.playerOne);
         stageM.setTitle("Hell Chess 0.2.0");
         stageM.setScene(mainScene);
 
@@ -95,8 +97,7 @@ public class UI extends Application {
                             } else if (Constants.PLAYER_THREE.equals(remove.owner)) {
                                 GameController.playerThreePieces.remove(remove);
                             }
-                            remove.x = -1;
-                            remove.y = -1;
+                            board.tiles[movingTile.x/Constants.TILE_SIZE][movingTile.y/Constants.TILE_SIZE].occupiedBy = Constants.NO_PIECE;
                         }
 
                         selectedTile.occupiedBy.x = movingTile.x/Constants.TILE_SIZE;

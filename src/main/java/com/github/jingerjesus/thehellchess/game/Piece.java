@@ -202,7 +202,7 @@ public class Piece {
         }
 
         for (int i = 1; i < board.length; i ++) {
-            if (this.x - i >= 0 && this.y - i < board.length) {
+            if (this.x - i >= 0 && this.y - i >= 0) {
                 if (board[this.x - i][this.y - i].occupiedBy == Constants.NO_PIECE) {
                     possibleMoves[3] ++;
                 } else if (board[this.x - i][this.y-i].occupiedBy.owner != GameController.turn) {
