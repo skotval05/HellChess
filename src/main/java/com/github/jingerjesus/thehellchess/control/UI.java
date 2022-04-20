@@ -4,6 +4,7 @@ import com.github.jingerjesus.thehellchess.game.Board;
 import com.github.jingerjesus.thehellchess.game.Piece;
 import com.github.jingerjesus.thehellchess.game.Player;
 import com.github.jingerjesus.thehellchess.game.Tile;
+import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,6 +13,8 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -27,7 +30,6 @@ public class UI extends Application {
 
     @Override
     public void start(Stage stage) {
-
 
         //do ui design or dig up the old one we drew years ago
         //board is uhhh 16x16 (x7 possibly if we get this standard board working)
@@ -53,7 +55,9 @@ public class UI extends Application {
                 int mouseTileY = (int) mouseDragEvent.getSceneY() / Constants.TILE_SIZE;
                 System.out.println("Drag start at " + mouseTileX + " " + mouseTileY);
 
-                selectedTile = board.tiles[mouseTileX][mouseTileY];
+                if (mouseTileY < 16) {
+                    selectedTile = board.tiles[mouseTileX][mouseTileY];
+                }
 
                 if (selectedTile != null && isValidSelect(selectedTile, GameController.turn) && selectedTile.occupiedBy != Constants.NO_PIECE) {
 
@@ -73,7 +77,9 @@ public class UI extends Application {
                 int mouseTileY = (int) mouseDragEvent.getSceneY() / Constants.TILE_SIZE;
                 System.out.println("Drag exits at " + mouseTileX + " " + mouseTileY);
 
-                movingTile = board.tiles[mouseTileX][mouseTileY];
+                if (mouseTileY < 16) {
+                    movingTile = board.tiles[mouseTileX][mouseTileY];
+                }
 
                 if (selectedTile != null && movingTile != selectedTile && selectedTile.occupiedBy != Constants.NO_PIECE) {
                     board.highlights[selectedTile.x / Constants.TILE_SIZE][selectedTile.y / Constants.TILE_SIZE].setHighlight(Constants.HighlightType.NONE);
@@ -81,7 +87,7 @@ public class UI extends Application {
                     if (isValidMove(movingTile)) {
 
                         if (movingTile.occupiedBy != Constants.NO_PIECE) {
-                            Piece remove = board.pieceAt(selectedTile.x/Constants.TILE_SIZE, selectedTile.y/Constants.TILE_SIZE);
+                            Piece remove = board.pieceAt(movingTile.x/Constants.TILE_SIZE, movingTile.y/Constants.TILE_SIZE);
                             if (Constants.PLAYER_ONE.equals(remove.owner)) {
                                 GameController.playerOnePieces.remove(remove);
                             } else if (Constants.PLAYER_TWO.equals(remove.owner)) {
@@ -155,6 +161,31 @@ public class UI extends Application {
     );
 
     Timeline loop = new Timeline(animate);
+
+    private void doSplashScreen() {
+
+        ImageView view = new ImageView(FileInput.getImage("Splash"));
+        view.setX(0); view.setY(0);
+        view.setFitWidth(Constants.SCREEN_WIDTH); view.setFitHeight(Constants.SCREEN_HEIGHT);
+
+        Stage splash = new Stage();
+
+        Group splashGroup = new Group(view);
+        Scene splashScreen = new Scene(splashGroup, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        splash.setScene(splashScreen);
+
+        splash.show();
+
+        splash.addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+
+            }
+        });
+
+
+    }
 
     public static void main(String[] args) {
         launch();

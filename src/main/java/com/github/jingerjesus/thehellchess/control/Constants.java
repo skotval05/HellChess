@@ -14,7 +14,7 @@ public class Constants {
 
     //UI constants
     public static final int SCREEN_WIDTH = 512;
-    public static final int SCREEN_HEIGHT = 512;
+    public static final int SCREEN_HEIGHT = 544;
 
     //Board/tile constants
     public static final int TILE_SIZE = 32;
