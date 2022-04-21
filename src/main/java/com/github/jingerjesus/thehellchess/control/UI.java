@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
@@ -27,17 +28,33 @@ public class UI extends Application {
     private Board board = new Board();
     private Tile selectedTile = null;
     private  Tile movingTile = null;
+    private ImageView borderView;
+
 
     @Override
     public void start(Stage stage) {
+
+        Rectangle turnIndicator = GameController.getTurnInd();
+        turnIndicator.setX(2);
+        turnIndicator.setY( (board.tiles.length*Constants.TILE_SIZE) + 2 );
+        turnIndicator.setWidth(27);
+        turnIndicator.setHeight(27);
+        turnIndicator.setFill(Constants.playerOne);
+        mainGroup.getChildren().add(turnIndicator);
 
         //do ui design or dig up the old one we drew years ago
         //board is uhhh 16x16 (x7 possibly if we get this standard board working)
         mainScene = new Scene(mainGroup, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
-        mainScene.setFill(Constants.playerOne);
-        stageM.setTitle("Hell Chess 0.2.0");
+        stageM.setTitle("Hell Chess v0.1.1-alpha");
         stageM.setScene(mainScene);
+        stageM.getIcons().add(FileInput.getImage("RedPawn"));
+
+        borderView = new ImageView(FileInput.getImage("Border"));
+        borderView.setX(0);
+        borderView.setY(board.tiles.length * Constants.TILE_SIZE);
+        mainGroup.getChildren().add(borderView);
+        turnIndicator.toFront();
 
         GameController.initPieces(true);
         board.updateBoard();

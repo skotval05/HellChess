@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.github.jingerjesus.thehellchess.game.Piece;
 import com.github.jingerjesus.thehellchess.game.Player;
+import javafx.scene.shape.Rectangle;
 
 /*
     IMPORTANT NOTE:
@@ -19,24 +20,27 @@ public class GameController {
     public static ArrayList<Piece> playerTwoPieces = new ArrayList<Piece>(32);
     public static ArrayList<Piece> playerThreePieces = new ArrayList<Piece>(32);
 
-
+    private static Rectangle turnIndicator = new Rectangle();
 
     public static void cycleTurn() {
+
         if (turn == Constants.PLAYER_ONE) {
             turn = Constants.PLAYER_TWO;
-            UI.mainScene.setFill(Constants.playerTwo);
+            turnIndicator.setFill(Constants.playerTwo);
         }
         else if (turn == Constants.PLAYER_TWO) {
-            UI.mainScene.setFill(Constants.playerThree);
+            turnIndicator.setFill(Constants.playerThree);
             turn = Constants.PLAYER_THREE;
         }
         else if (turn == Constants.PLAYER_THREE) {
             turn = Constants.PLAYER_ONE;
-            UI.mainScene.setFill(Constants.playerOne);
+            turnIndicator.setFill(Constants.playerOne);
         }
         else turn = Constants.NO_PLAYER;
 
     }
+
+    public static Rectangle getTurnInd() {return turnIndicator;}
 
     public static void initPieces(boolean normalStart) {
         // if (normalStart) {
@@ -114,7 +118,5 @@ public class GameController {
 
         // }
     }
-
-    public static void movePiece() {}
 
 }

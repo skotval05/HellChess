@@ -64,6 +64,8 @@ public class FileInput {
 
             } else if (imageName.equals("Splash")) {
                 image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/LoadScreen.png"));
+            } else if (imageName.equals("Border")) {
+                image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/Border_I_Hardly_Know_Her.png"));
             } else {
                 image = new Image(new FileInputStream("src/main/java/com/github/jingerjesus/thehellchess/resources/Tile.png"));
             }
