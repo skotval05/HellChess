@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+import java.util.EventListener;
+
 public class UI extends Application {
     private Stage stageM = new Stage();
     public static Scene mainScene;
@@ -29,10 +32,93 @@ public class UI extends Application {
     private Tile selectedTile = null;
     private  Tile movingTile = null;
     private ImageView borderView;
+    boolean onSplash = true;
+    //private ArrayList<Board> boards = new ArrayList<Board>(7);
 
 
     @Override
     public void start(Stage stage) {
+
+        stageM.setTitle("Hell Chess v0.1.1-alpha");
+        stageM.getIcons().add(FileInput.getImage("RedPawn"));
+
+        doSplashScreen();
+
+    }
+
+    private boolean isValidSelect(Tile tile, Player turn) {
+        boolean temp = true;
+
+        if (tile.occupiedBy == Constants.NO_PIECE || tile.occupiedBy.owner != turn) {
+            temp = false;
+        }
+
+        return temp;
+    }
+
+    private boolean isValidMove(Tile tile) {
+        boolean temp = true;
+
+        if (board.highlights[tile.x/Constants.TILE_SIZE][tile.y/Constants.TILE_SIZE].getHighlight() == Constants.HighlightType.NONE
+        || board.highlights[tile.x/Constants.TILE_SIZE][tile.y/Constants.TILE_SIZE].getHighlight() == Constants.HighlightType.SELECTED) {
+            temp = false;
+        }
+
+        System.out.println("Is that drag a valid move: " + temp);
+
+        return temp;
+    }
+
+    KeyFrame animate = new KeyFrame(
+
+            //Common FPS Values:
+            //120 FPS: 0.0083 sec
+            //60 FPS: 0.0167 sec
+            //35 FPS: 0.029 sec
+            //1 FPS: 1.0 sec
+            Duration.seconds(0.029),
+            actionEvent -> {
+            }
+    );
+
+    Timeline loop = new Timeline(animate);
+
+    private void doSplashScreen() {
+
+        ImageView view = new ImageView(FileInput.getImage("Splash"));
+        view.setX(0); view.setY(0);
+        view.setFitWidth(Constants.SCREEN_WIDTH); view.setFitHeight(Constants.SCREEN_HEIGHT);
+
+        Group splashGroup = new Group(view);
+        Scene splashScreen = new Scene(splashGroup, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        stageM.setScene(splashScreen);
+
+        stageM.show();
+
+        stageM.addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                stageM.addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent keyEvent) {
+                        //do nothing
+                    }
+                });
+                if (onSplash) {
+                    doGameScreen();
+                    onSplash = false;
+                }
+
+                return;
+
+            }
+        });
+
+    }
+
+    private void doGameScreen() {
+
 
         Rectangle turnIndicator = GameController.getTurnInd();
         turnIndicator.setX(2);
@@ -46,9 +132,8 @@ public class UI extends Application {
         //board is uhhh 16x16 (x7 possibly if we get this standard board working)
         mainScene = new Scene(mainGroup, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
-        stageM.setTitle("Hell Chess v0.1.1-alpha");
         stageM.setScene(mainScene);
-        stageM.getIcons().add(FileInput.getImage("RedPawn"));
+
 
         borderView = new ImageView(FileInput.getImage("Border"));
         borderView.setX(0);
@@ -139,69 +224,6 @@ public class UI extends Application {
                 System.exit(0);
             }
         });
-
-
-    }
-
-    private boolean isValidSelect(Tile tile, Player turn) {
-        boolean temp = true;
-
-        if (tile.occupiedBy == Constants.NO_PIECE || tile.occupiedBy.owner != turn) {
-            temp = false;
-        }
-
-        return temp;
-    }
-
-    private boolean isValidMove(Tile tile) {
-        boolean temp = true;
-
-        if (board.highlights[tile.x/Constants.TILE_SIZE][tile.y/Constants.TILE_SIZE].getHighlight() == Constants.HighlightType.NONE
-        || board.highlights[tile.x/Constants.TILE_SIZE][tile.y/Constants.TILE_SIZE].getHighlight() == Constants.HighlightType.SELECTED) {
-            temp = false;
-        }
-
-        System.out.println("Is that drag a valid move: " + temp);
-
-        return temp;
-    }
-
-    KeyFrame animate = new KeyFrame(
-
-            //Common FPS Values:
-            //120 FPS: 0.0083 sec
-            //60 FPS: 0.0167 sec
-            //35 FPS: 0.029 sec
-            //1 FPS: 1.0 sec
-            Duration.seconds(0.029),
-            actionEvent -> {
-            }
-    );
-
-    Timeline loop = new Timeline(animate);
-
-    private void doSplashScreen() {
-
-        ImageView view = new ImageView(FileInput.getImage("Splash"));
-        view.setX(0); view.setY(0);
-        view.setFitWidth(Constants.SCREEN_WIDTH); view.setFitHeight(Constants.SCREEN_HEIGHT);
-
-        Stage splash = new Stage();
-
-        Group splashGroup = new Group(view);
-        Scene splashScreen = new Scene(splashGroup, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-
-        splash.setScene(splashScreen);
-
-        splash.show();
-
-        splash.addEventFilter(KeyEvent.ANY, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-
-            }
-        });
-
 
     }
 

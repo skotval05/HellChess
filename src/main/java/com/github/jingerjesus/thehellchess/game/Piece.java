@@ -5,6 +5,8 @@ import com.github.jingerjesus.thehellchess.control.GameController;
 import com.github.jingerjesus.thehellchess.peripherals.FileInput;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+
 
 public class Piece {
     public Constants.PieceType type;
@@ -14,7 +16,7 @@ public class Piece {
     public int x, y;
     public int firstX;
     private String coverIdentifier = "";
-    public int[][] moveSets;
+    public ArrayList<Tile> possibleMoves = new ArrayList<Tile>();
     private boolean hasPawnMoves = false, hasRookMoves = false, hasKnightMoves = false,
             hasBishopMoves = false, hasKingMoves = false;
         //ignoring Queen because her moves are an addition of Rook and Bishop.
@@ -225,7 +227,50 @@ public class Piece {
         int[] possibleMoves = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
 
         //indexes start at due north and rotate clockwise around the king.
+        //castling indexes are index 0, 2, 4, 6
 
+        //castling checks
+        for (int i = 1; i < board.length; i ++) {
+            if (this.y - i >= 0) {
+                if (board[this.x][this.y-i].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[0] ++;
+                } else if (board[this.x][this.y-i].occupiedBy.type == Constants.PieceType.ROOK) {
+                    break;
+                } else possibleMoves[0] = 0; break;
+            } else possibleMoves[0] = 0; break;
+        }
+
+        for (int i = 1; i < board.length; i ++) {
+            if (this.x + i < board.length) {
+                if (board[this.x + i][this.y].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[2] ++;
+                } else if (board[this.x + i][this.y].occupiedBy.owner != GameController.turn) {
+                    break;
+                } else possibleMoves[2] = 0; break;
+            } else possibleMoves[2] = 0; break;
+        }
+
+        for (int i = 1; i < board.length; i ++) {
+            if (this.y + i < board.length) {
+                if (board[this.x][this.y + i].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[4] ++;
+                } else if (board[this.x][this.y+i].occupiedBy.owner != GameController.turn) {
+                    break;
+                } else possibleMoves[4] = 0; break;
+            } else possibleMoves[4] = 0; break;
+        }
+
+        for (int i = 1; i < board.length; i ++) {
+            if (this.x - i >= 0) {
+                if (board[this.x - i][this.y].occupiedBy == Constants.NO_PIECE) {
+                    possibleMoves[6] ++;
+                } else if (board[this.x - i][this.y].occupiedBy.owner != GameController.turn) {
+                    break;
+                } else possibleMoves[6] = 0; break;
+            } else possibleMoves[6] = 0; break;
+        }
+
+        //standard moving checks
         if (this.y - 1 >= 0) {
             if (board[this.x][this.y - 1].occupiedBy == Constants.NO_PIECE
                         || board[this.x][this.y-1].occupiedBy.owner != GameController.turn) {
@@ -260,7 +305,6 @@ public class Piece {
             }
         }
 
-
         if (this.y + 1 < board.length) {
             if (board[this.x][this.y + 1].occupiedBy == Constants.NO_PIECE
                         || board[this.x][this.y+1].occupiedBy.owner != GameController.turn) {
@@ -286,7 +330,6 @@ public class Piece {
             System.out.println(possibleMoves[i]);
         }
         */
-
 
         return possibleMoves;
     }
